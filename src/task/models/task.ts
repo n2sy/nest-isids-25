@@ -7,6 +7,7 @@ export class Task {
     public statut: string,
   ) {}
 }
+
 // export class Task {
 //   id: string;
 //   text: string;

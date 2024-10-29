@@ -16,15 +16,19 @@ import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { AddTaskDTO } from './DTO/addTaskDTO';
 import { Task } from './models/task';
-import { log } from 'console';
+import { TaskService } from './task.service';
 
 @Controller('task')
 export class TaskController {
+  constructor(private taskSer: TaskService) {}
+
+  //@Inject(TaskService) taskSer;
+
   allTasks: Task[] = [];
 
-  @Get('all')
+  @Get('all') //GET nomdudomaine/task/all
   getAllTasks(@Req() request: Request, @Res() response: Response) {
-    console.log(request);
+    console.log(this.taskSer.sayHello());
     return response.json(this.allTasks);
   }
 
@@ -33,10 +37,7 @@ export class TaskController {
     @Query('startYear', ParseIntPipe) y1,
     @Query('endYear', ParseIntPipe) y2,
   ) {
-    let t = this.allTasks.filter((task) => task.year >= y1 && task.year <= y2);
-    return {
-      selectedTasks: t,
-    };
+    return this.taskSer.getNbTasks(y1, y2);
   }
 
   @Get(':id')
