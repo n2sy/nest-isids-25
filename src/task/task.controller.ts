@@ -51,8 +51,9 @@ export class TaskController {
   }
 
   @Post('add')
-  addNewTask(@Body() body: AddTaskDTO) {
-    console.log(body instanceof AddTaskDTO);
+  addNewTask(@Body() body: AddTaskDTO, @Res() res: Response) {
+    //console.log(body instanceof AddTaskDTO);
+    console.log(res);
 
     let generatedId = uuidv4();
 
@@ -64,10 +65,10 @@ export class TaskController {
       body.statut,
     );
     this.allTasks.push(newTask);
-    return {
+    return res.json({
       message: 'Task added successfully',
       generatedId,
-    };
+    });
   }
 
   @Put('edit/:id')
