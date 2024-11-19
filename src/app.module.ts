@@ -5,6 +5,7 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BookModule } from './book/book.module';
@@ -12,16 +13,18 @@ import { FirstMiddleware } from './first/first.middleware';
 import { SecondMiddleware } from './second/second.middleware';
 import { TaskModule } from './task/task.module';
 
+dotenv.config();
+
 @Module({
   imports: [
     TaskModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 8889,
-      username: 'root',
-      password: 'root',
-      database: 'isids25',
+      host: process.env.APP_HOST,
+      port: Number(process.env.PORT),
+      username: process.env.APP_USERNAME,
+      password: process.env.APP_PWD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
