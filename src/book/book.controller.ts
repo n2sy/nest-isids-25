@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 
@@ -87,5 +88,20 @@ export class BookController {
   async recoverBook(@Param('id', ParseIntPipe) id) {
     let response = await this.bookSer.recoverBook(id);
     return response;
+  }
+
+  @Get('stats')
+  async nbreDeLivreParAnnee() {
+    let data = await this.bookSer.nbBooksPerYear();
+    return data;
+  }
+
+  @Get('stats/v2')
+  async nbreDeLivreEntreDeuxAnnes(
+    @Query('startyear', ParseIntPipe) year1,
+    @Query('endyear', ParseIntPipe) year2,
+  ) {
+    let data = await this.bookSer.nbBooksBetweenYears(year1, year2);
+    return data;
   }
 }

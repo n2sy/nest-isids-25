@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeStamp } from '../generics/timestamp';
+import { AuthorEntity } from './author.entity';
 
 @Entity('livre')
 export class BookEntity extends TimeStamp {
@@ -20,4 +21,6 @@ export class BookEntity extends TimeStamp {
 
   @Column()
   editor: string;
+
+  author: AuthorEntity;
 }

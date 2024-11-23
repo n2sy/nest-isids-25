@@ -74,4 +74,29 @@ export class BookService {
 
     this.bookRepo.recover(tabBookToRemove);
   }
+
+  nbBooksPerYear() {
+    let qb = this.bookRepo.createQueryBuilder('book');
+
+    return qb
+      .select('book.year, count(book.id) as nbreLivres')
+      .groupBy('book.year')
+      .getRawMany();
+  }
+
+  nbBooksBetweenYears(startYear, endYear) {
+    let qb = this.bookRepo.createQueryBuilder('book');
+
+    return (
+      qb
+        .select('book.year, count(book.id) as nbreLivres')
+        .where('book.year >= :y1 AND book.year <= :y2', {
+          y1: startYear,
+          y2: endYear,
+        })
+        // .setParameters({ y1: startYear, y2: endYear })
+        .groupBy('book.year')
+        .getRawMany()
+    );
+  }
 }
