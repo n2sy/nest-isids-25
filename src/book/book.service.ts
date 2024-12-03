@@ -10,7 +10,11 @@ export class BookService {
   ) {}
 
   getAllBooks() {
-    return this.bookRepo.find();
+    return this.bookRepo.find({
+      relations: {
+        author: true,
+      },
+    });
   }
 
   addBook(nBook) {
@@ -22,6 +26,7 @@ export class BookService {
       where: {
         id: selectedId,
       },
+      loadRelationIds: true,
     });
   }
 

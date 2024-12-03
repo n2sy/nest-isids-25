@@ -53,6 +53,8 @@ export class BookController {
     let response = await this.bookSer.getBookById(id);
     if (!response.length)
       throw new NotFoundException(`Le livre d'id ${id} n'existe pas`);
+
+    delete response[0].author.prenom;
     return response[0];
   }
 
