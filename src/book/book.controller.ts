@@ -11,15 +11,22 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { BookService } from './book.service';
+import { JwtAuthGuard } from 'src/guards/jwt-auth-guard/jwt-auth-guard.guard';
+import { AdminGuard } from 'src/guards/admin/admin.guard';
 
+//@UseGuards(JwtAuthGuard)
 @Controller('book')
 export class BookController {
   @Inject(BookService) bookSer: BookService;
 
+  @UseGuards(JwtAuthGuard)
   @Get('/all')
-  async chercherTousLesLivres() {
+  async chercherTousLesLivres(@Req() req: Request) {
+    console.log(req);
     try {
       let data = await this.bookSer.getAllBooks();
       return { allBooks: data };
@@ -38,10 +45,11 @@ export class BookController {
   //       });
   //   }
 
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('/new')
-  async ajouterLivre(@Body() body) {
+  async ajouterLivre(@Req() req: Request, @Body() body) {
     try {
-      let data = await this.bookSer.addBook(body);
+      let data = await this.bookSer.addBook(body, req['user']['userId']);
       return { data };
     } catch (err) {
       new ConflictException();
