@@ -10,6 +10,10 @@ export class AuthorService {
     private authorRepo: Repository<AuthorEntity>,
   ) {}
 
+  getAllAuthors() {
+    return this.authorRepo.find();
+  }
+
   getAuthorById(id) {
     return this.authorRepo.findOne({
       where: {

@@ -11,8 +11,11 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { BookService } from './book.service';
+import { JwtAuthGuard } from 'src/guards/jwt-auth/jwt-auth.guard';
+import { AdminAuthGuard } from 'src/guards/admin-auth/admin-auth.guard';
 
 @Controller('book')
 export class BookController {
@@ -22,7 +25,7 @@ export class BookController {
   async chercherTousLesLivres() {
     try {
       let data = await this.bookSer.getAllBooks();
-      return { allBooks: data };
+      return data;
     } catch (err) {
       console.log(err);
     }
@@ -38,8 +41,10 @@ export class BookController {
   //       });
   //   }
 
-  @Post('/new')
+  //@UseGuards(JwtAuthGuard, AdminAuthGuard)
+  @Post('/add')
   async ajouterLivre(@Body() body) {
+    console.log(body)
     try {
       let data = await this.bookSer.addBook(body);
       return { data };
@@ -53,9 +58,17 @@ export class BookController {
     let response = await this.bookSer.getBookById(id);
     if (!response.length)
       throw new NotFoundException(`Le livre d'id ${id} n'existe pas`);
-
-    delete response[0].author.prenom;
     return response[0];
+  }
+
+  @Get('/title')
+  async chercherBookParTitre(@Query('title') title) {
+    let response = await this.bookSer.getBookByTitle(title);
+    if (!response.length)
+      throw new NotFoundException(
+        `Aucun livre avec ce titre n'existe dans notre BD`,
+      );
+    return response;
   }
 
   @Put('/edit/:id')

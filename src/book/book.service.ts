@@ -30,6 +30,14 @@ export class BookService {
     });
   }
 
+  getBookByTitle(searchTitle) {
+    let qb = this.bookRepo.createQueryBuilder('book');
+    return qb
+      .select('book')
+      .where('book.title LIKE :searchT', { searchT: `%${searchTitle}%` })
+      .getMany();
+  }
+
   async updateBook(book, id) {
     let b = await this.bookRepo.preload({
       id: id,

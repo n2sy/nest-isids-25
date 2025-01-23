@@ -5,11 +5,13 @@ import { UserEntity } from './entities/user.entity';
 import { RoleEnum } from './generics/role.enum';
 
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+    private jwtService: JwtService,
   ) {}
 
   async register(newUser) {
@@ -43,10 +45,16 @@ export class AuthService {
 
     const test = await bcrypt.compare(credentials.password, u.password);
     if (!test) throw new NotFoundException('Mot de passe invalide');
+
     return {
       email: u.email,
       username: u.username,
       role: u.role,
+      access_token: this.jwtService.sign({
+        id: u.id,
+        role: u.role,
+        username: u.username,
+      }),
     };
   }
 }

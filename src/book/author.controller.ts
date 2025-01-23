@@ -13,6 +13,16 @@ import { AuthorService } from './author.service';
 export class AuthorController {
   constructor(private authorSer: AuthorService) {}
 
+  @Get('/all')
+  async chercherTousLesAuteurs() {
+    try {
+      let data = await this.authorSer.getAllAuthors();
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   @Get(':id')
   async chercherAuteurParId(@Param('id', ParseIntPipe) id) {
     let response = await this.authorSer.getAuthorById(id);
