@@ -11,20 +11,12 @@ import {
   Post,
   Put,
   Query,
-<<<<<<< HEAD
-  UseGuards,
-} from '@nestjs/common';
-import { BookService } from './book.service';
-import { JwtAuthGuard } from 'src/guards/jwt-auth/jwt-auth.guard';
-import { AdminAuthGuard } from 'src/guards/admin-auth/admin-auth.guard';
-=======
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { JwtAuthGuard } from 'src/guards/jwt-auth-guard/jwt-auth-guard.guard';
 import { AdminGuard } from 'src/guards/admin/admin.guard';
->>>>>>> origin/main
 
 //@UseGuards(JwtAuthGuard)
 @Controller('book')
@@ -53,16 +45,9 @@ export class BookController {
   //       });
   //   }
 
-<<<<<<< HEAD
-  //@UseGuards(JwtAuthGuard, AdminAuthGuard)
-  @Post('/add')
-  async ajouterLivre(@Body() body) {
-    console.log(body)
-=======
   @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('/new')
   async ajouterLivre(@Req() req: Request, @Body() body) {
->>>>>>> origin/main
     try {
       let data = await this.bookSer.addBook(body, req['user']['userId']);
       return { data };
