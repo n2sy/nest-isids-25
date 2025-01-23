@@ -31,6 +31,7 @@ dotenv.config();
     }),
     BookModule,
     AuthModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

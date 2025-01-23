@@ -11,7 +11,11 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+<<<<<<< HEAD
     private jwtService: JwtService,
+=======
+   private jwtSer : JwtService
+>>>>>>> origin/main
   ) {}
 
   async register(newUser) {
@@ -45,6 +49,7 @@ export class AuthService {
 
     const test = await bcrypt.compare(credentials.password, u.password);
     if (!test) throw new NotFoundException('Mot de passe invalide');
+<<<<<<< HEAD
 
     return {
       email: u.email,
@@ -55,6 +60,17 @@ export class AuthService {
         role: u.role,
         username: u.username,
       }),
+=======
+    const token = this.jwtSer.sign(
+        {
+            id : u.id,
+            role : u.role
+        }
+    )
+    return {
+      message : "Connexion réussie",
+      access_token : token
+>>>>>>> origin/main
     };
   }
 }
