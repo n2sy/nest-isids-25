@@ -52,6 +52,7 @@ export class AuthService {
     return {
       message: 'Connexion réussie',
       access_token: token,
+      role: u.role,
     };
   }
 }

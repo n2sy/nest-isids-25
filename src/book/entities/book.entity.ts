@@ -21,13 +21,13 @@ export class BookEntity extends TimeStamp {
   year: number;
 
   @Column()
-  publisher: string;
+  editor: string;
 
   @Column()
   image: string;
 
-  @Column()
-  description: string;
+  @Column({ type: 'text' })
+  summary;
 
   @ManyToOne(() => AuthorEntity, (auth) => auth.listeLivres, {
     eager: false,
@@ -35,6 +35,6 @@ export class BookEntity extends TimeStamp {
   })
   author: AuthorEntity;
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
-  user: UserEntity;
+  //   @ManyToOne(() => UserEntity, (user) => user.id)
+  //   user: UserEntity;
 }

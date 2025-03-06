@@ -23,7 +23,7 @@ import { AdminGuard } from 'src/guards/admin/admin.guard';
 export class BookController {
   @Inject(BookService) bookSer: BookService;
 
-  @UseGuards(JwtAuthGuard)
+  //   @UseGuards(JwtAuthGuard)
   @Get('/all')
   async chercherTousLesLivres(@Req() req: Request) {
     console.log(req);
@@ -45,11 +45,12 @@ export class BookController {
   //       });
   //   }
 
-  @UseGuards(JwtAuthGuard, AdminGuard)
+  //   @UseGuards(JwtAuthGuard, AdminGuard)
   @Post('/new')
   async ajouterLivre(@Req() req: Request, @Body() body) {
     try {
-      let data = await this.bookSer.addBook(body, req['user']['userId']);
+      //   let data = await this.bookSer.addBook(body, req['user']['userId']);
+      let data = await this.bookSer.addBook(body);
       return { data };
     } catch (err) {
       new ConflictException();
@@ -120,6 +121,15 @@ export class BookController {
     @Query('endyear', ParseIntPipe) year2,
   ) {
     let data = await this.bookSer.nbBooksBetweenYears(year1, year2);
+    return data;
+  }
+
+  @Get('filter')
+  async filtrerLivresEntreDeuxAnnees(
+    @Query('startyear', ParseIntPipe) year1,
+    @Query('endyear', ParseIntPipe) year2,
+  ) {
+    let data = await this.bookSer.getBooksBetweenYears(year1, year2);
     return data;
   }
 }

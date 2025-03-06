@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { BookEntity } from './entities/book.entity';
 
 @Injectable()
@@ -17,8 +17,8 @@ export class BookService {
     });
   }
 
-  addBook(nBook, id) {
-    nBook.user = id;
+  addBook(nBook) {
+    //nBook.user = id;
     return this.bookRepo.save(nBook);
   }
 
@@ -112,5 +112,13 @@ export class BookService {
         .groupBy('book.year')
         .getRawMany()
     );
+  }
+
+  getBooksBetweenYears(y1, y2) {
+    return this.bookRepo.find({
+      where: {
+        year: Between(y1, y2),
+      },
+    });
   }
 }
